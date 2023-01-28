@@ -19,7 +19,7 @@ function operate(operator, num1, num2){
 }
 
 
-const equation = {
+let equation = {
     operator: null,
     num1: '',
     num2: '',
@@ -73,7 +73,9 @@ function buttonSetup(){
                     clearEquation();
                     break;
                 case "equals":
-                    calculate();
+                    if(equation.num2) {
+                        calculate();
+                    }
                     break;     
                 default:
                     const number = button.innerText;
@@ -95,17 +97,19 @@ function buttonSetup(){
 }
 
 function calculate(){
-    const result = operate(equation.operator, parseInt(equation.num1), parseInt(equation.num2));
-    display(result);
+    let result = operate(equation.operator, parseInt(equation.num1), parseInt(equation.num2));
+
+    if(result === Infinity){
+        display('Sorry pal, you can\'t actually divide by zero...');
+        clearEquation();
+        return;
+    }else {
+        display(result);
+    }
     
     clearEquation();
-    equation.num1 = parseString(result);
+    equation.num1 = result.toString();
 
-}
-
-function clearDisplay(){
-    const displayText = document.querySelector(".display");
-    displayText.innerText = '';
 }
 
 function clearEquation(){
@@ -117,6 +121,11 @@ function clearEquation(){
 function display(newText){
     const displayText = document.querySelector(".display");
     displayText.innerText = newText;
+}
+
+function clearDisplay(){
+    const displayText = document.querySelector(".display");
+    displayText.innerText = '';
 }
 
 buttonSetup();
