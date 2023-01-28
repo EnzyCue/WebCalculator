@@ -18,66 +18,105 @@ function operate(operator, num1, num2){
     return operator(num1, num2);
 }
 
-const buttons = document.querySelectorAll('button');
-console.log(buttons);
 
-buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const buttonClass = button.classList[0];
-        switch (buttonClass) {
-            case "zero":
-                display(0);
-                break;
-            case "one":
-                display(1);
-                break;
-            case "two":
-                display(2);
-                break;
-            case "three":
-                display(3);
-                break;
-            case "four":
-                display(4);
-                break;
-            case "five":
-                display(5);
-                break;
-            case "six":
-                display(6);
-                break;
-            case "seven":
-                display(7);
-                break;
-            case "eight":
-                display(8);
-                break;
-            case "nine":
-                display(9);
-                break;
-            case "sum":
-                display('+');
-                break;
-            case "subtract":
-                display('-');
-                break;
-            case "multipy":
-                display('×');
-                break;
-            case "divide":
-                display('÷');
-                break;
-            
-            default:
-                // code to be executed for any other button
-                break;
-        }
-    });
-})
+const equation = {
+    operator: null,
+    num1: '',
+    num2: '',
+}
+
+
+function buttonSetup(){
+    const buttons = document.querySelectorAll('button');
+
+    buttons.forEach((button) => {
+
+        button.addEventListener("click", () => {
+
+            const buttonClass = button.classList[0];
+
+            switch (buttonClass) {
+                case "add":  
+                    if(equation.num1){
+                        if(equation.num2) {
+                            calculate();
+                        }
+                        equation.operator = add;
+                    }                  
+                    break;
+                case "subtract":          
+                    if(equation.num1){
+                        if(equation.num2) {
+                            calculate();
+                        }
+                        equation.operator = subtract;
+                    }                  
+                    break;
+                case "multiply":        
+                    if(equation.num1){
+                        if(equation.num2) {
+                            calculate();
+                        }
+                        equation.operator = multiply;
+                    }                  
+                    break;
+                case "divide":       
+                    if(equation.num1){
+                        if(equation.num2) {
+                            calculate();
+                        }
+                        equation.operator = divide;
+                    }                  
+                    break;
+                case "clear":
+                    clearDisplay();
+                    clearEquation();
+                    break;
+                case "equals":
+                    calculate();
+                    break;     
+                default:
+                    const number = button.innerText;
+
+                    if(equation.operator === null){
+                        equation.num1 += number;
+                        display(equation.num1);
+                    }else {
+                        equation.num2 += number;
+                        display(equation.num2);
+                    }
+
+                    break;
+
+
+            }
+        });
+});
+}
+
+function calculate(){
+    const result = operate(equation.operator, parseInt(equation.num1), parseInt(equation.num2));
+    display(result);
+    
+    clearEquation();
+    equation.num1 = parseString(result);
+
+}
+
+function clearDisplay(){
+    const displayText = document.querySelector(".display");
+    displayText.innerText = '';
+}
+
+function clearEquation(){
+    equation.num1 = '';
+    equation.num2 = '';
+    equation.operator = null;
+}
 
 function display(newText){
     const displayText = document.querySelector(".display");
-    displayText.innerText += newText;
-    return;
+    displayText.innerText = newText;
 }
 
+buttonSetup();
