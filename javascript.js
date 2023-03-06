@@ -100,7 +100,7 @@ function calculate(){
     let result = operate(equation.operator, parseInt(equation.num1), parseInt(equation.num2));
 
     if(result === Infinity){
-        display('Sorry pal, you can\'t actually divide by zero...');
+        display('Sorry buddy...');
         clearEquation();
         return;
     }else {
